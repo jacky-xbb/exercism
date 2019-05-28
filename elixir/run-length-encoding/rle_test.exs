@@ -54,7 +54,7 @@ defmodule RunLengthEncoderTest do
     assert RunLengthEncoder.decode("2A3B4C") == "AABBBCCCC"
   end
 
-  # @tag :pending
+  @tag :pending
   test "decode single characters with repeated characters" do
     assert RunLengthEncoder.decode("12WB12W3B24WB") ===
              "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"

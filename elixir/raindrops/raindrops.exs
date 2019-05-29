@@ -1,4 +1,5 @@
 defmodule Raindrops do
+  @factors %{3 => "Pling", 5 => "Plang", 7 => "Plong"}
   @doc """
   Returns a string based on raindrop factors.
 
@@ -10,37 +11,13 @@ defmodule Raindrops do
   """
   @spec convert(pos_integer) :: String.t()
   def convert(number) do
-    case do_convert(number, []) do
-      [] ->
-        number |> Integer.to_string()
-
-      output ->
-        output |> List.to_string()
-    end
+    @factors
+    |> Map.keys()
+    |> Enum.filter(&(rem(number, &1) == 0))
+    |> Enum.map_join(&@factors[&1])
+    |> output(number)
   end
 
-  defp do_convert(number, output) do
-    cond do
-      rem(number, 3) == 0 and "Pling" in output ->
-        do_convert(div(number, 3), output)
-
-      rem(number, 3) == 0 ->
-        do_convert(div(number, 3), ["Pling" | output])
-
-      rem(number, 5) == 0 and "Plang" in output ->
-        do_convert(div(number, 5), output)
-
-      rem(number, 5) == 0 ->
-        do_convert(div(number, 5), ["Plang" | output])
-
-      rem(number, 7) == 0 and "Plong" in output ->
-        do_convert(div(number, 7), output)
-
-      rem(number, 7) == 0 ->
-        do_convert(div(number, 7), ["Plong" | output])
-
-      true ->
-        Enum.reverse(output)
-    end
-  end
+  defp output("", number), do: Integer.to_string(number)
+  defp output(str, _number), do: str
 end

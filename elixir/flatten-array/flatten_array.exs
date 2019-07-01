@@ -13,22 +13,14 @@ defmodule FlattenArray do
   """
 
   @spec flatten(list) :: list
-  def flatten(list) do
-    do_flatten(list, [])
+  def flatten(list) when is_list(list) do
+    do_flatten(list)
   end
 
-  defp do_flatten([], flatten_list), do: Enum.sort(flatten_list)
-  defp do_flatten([h | t], flatten_list) when is_nil(h) do
-    do_flatten(t, flatten_list)
-  end
-  defp do_flatten([h | t], flatten_list) when is_integer(h) do
-    do_flatten(t, [h | flatten_list])
-  end
-  defp do_flatten([[] | t], flatten_list) do
-    do_flatten(t, flatten_list)
-  end
-  defp do_flatten([h | t], flatten_list) when is_list(h) do
-    do_flatten([hd(h), tl(h) | t], flatten_list)
-  end
+  defp do_flatten([h | t]), do: do_flatten(h) ++ do_flatten(t)
+  defp do_flatten([]), do: []
+  defp do_flatten(nil), do: []
+  defp do_flatten(elem), do: [elem]
+
 end
 
